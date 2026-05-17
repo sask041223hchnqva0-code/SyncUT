@@ -70,7 +70,8 @@ ALTER TABLE public.session_tokens ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.role_permissions ENABLE ROW LEVEL SECURITY;
 
 -- ============ RLS POLICY: profiles ============
-CREATE POLICY IF NOT EXISTS "profiles_self_view"
+DROP POLICY IF EXISTS "profiles_self_view" ON public.profiles;
+CREATE POLICY "profiles_self_view"
   ON public.profiles
   FOR SELECT
   TO authenticated
@@ -79,7 +80,8 @@ CREATE POLICY IF NOT EXISTS "profiles_self_view"
     OR role = 'admin'
   );
 
-CREATE POLICY IF NOT EXISTS "profiles_update_own"
+DROP POLICY IF EXISTS "profiles_update_own" ON public.profiles;
+CREATE POLICY "profiles_update_own"
   ON public.profiles
   FOR UPDATE
   TO authenticated
@@ -87,7 +89,8 @@ CREATE POLICY IF NOT EXISTS "profiles_update_own"
   WITH CHECK (auth.uid() = id OR role = 'admin');
 
 -- ============ RLS POLICY: audit_logs ============
-CREATE POLICY IF NOT EXISTS "audit_logs_view"
+DROP POLICY IF EXISTS "audit_logs_view" ON public.audit_logs;
+CREATE POLICY "audit_logs_view"
   ON public.audit_logs
   FOR SELECT
   TO authenticated
@@ -99,14 +102,16 @@ CREATE POLICY IF NOT EXISTS "audit_logs_view"
     )
   );
 
-CREATE POLICY IF NOT EXISTS "audit_logs_no_delete"
+DROP POLICY IF EXISTS "audit_logs_no_delete" ON public.audit_logs;
+CREATE POLICY "audit_logs_no_delete"
   ON public.audit_logs
   FOR DELETE
   TO authenticated
   USING (false);
 
 -- ============ RLS POLICY: session_tokens ============
-CREATE POLICY IF NOT EXISTS "session_tokens_view"
+DROP POLICY IF EXISTS "session_tokens_view" ON public.session_tokens;
+CREATE POLICY "session_tokens_view"
   ON public.session_tokens
   FOR SELECT
   TO authenticated
@@ -119,7 +124,8 @@ CREATE POLICY IF NOT EXISTS "session_tokens_view"
   );
 
 -- ============ RLS POLICY: role_permissions ============
-CREATE POLICY IF NOT EXISTS "role_permissions_view"
+DROP POLICY IF EXISTS "role_permissions_view" ON public.role_permissions;
+CREATE POLICY "role_permissions_view"
   ON public.role_permissions
   FOR SELECT
   TO authenticated
