@@ -1,0 +1,40 @@
+{
+  "name": "plataforma-universitaria",
+  "version": "1.0.0",
+  "description": "Plataforma Universitaria Integral - SaaS para gestión académica",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "db:push": "supabase db push",
+    "db:gen": "supabase gen types typescript --linked > packages/types/database.types.ts"
+  },
+  "devDependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@playwright/test": "^1.60.0",
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.105.4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^20.10.0",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "react-email": "^6.1.4",
+    "react-hook-form": "^7.76.0",
+    "resend": "^6.12.3",
+    "tailwind-merge": "^3.6.0",
+    "turbo": "^1.10.16",
+    "typescript": "^5.3.3",
+    "vitest": "^4.1.6",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.13"
+  },
+  "packageManager": "pnpm@11.1.2"
+}

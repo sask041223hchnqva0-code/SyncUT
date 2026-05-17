@@ -1,0 +1,38 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar código fuente
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Validación de Estilo de Código (Lint)
+        run: pnpm turbo lint
+
+      - name: Validación de Tipado (TypeScript)
+        run: pnpm turbo typecheck
+
+      - name: Ejecución de Tests Unitarios
+        run: pnpm turbo test
+
+      - name: Build del Proyecto
+        run: pnpm turbo build
