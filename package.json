@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Plataforma Universitaria Integral - SaaS para gestión académica",
   "private": true,
-  "packageManager": "pnpm@10.17.1",
+  "packageManager": "pnpm@8.15.9",
   "engines": {
-    "node": "20.x"
+    "node": ">=18.0.0"
   },
   "type": "module",
   "scripts": {

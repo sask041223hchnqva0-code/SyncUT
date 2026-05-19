@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "installCommand": "cd ../.. && npm install",
-  "buildCommand": "cd ../.. && npm run build"
+  "installCommand": "cd ../.. && corepack enable && corepack prepare pnpm@8.15.9 --activate && pnpm install",
+  "buildCommand": "cd ../.. && pnpm turbo run build --filter=web"
 }
