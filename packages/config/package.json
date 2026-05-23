@@ -1,0 +1,11 @@
+{
+  "name": "@plataforma/config",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "private": true
+}
