@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+package-lock.json
 
 # Environment
 .env
@@ -12,6 +13,8 @@ dist/
 build/
 coverage/
 *.tsbuildinfo
+apps/web/.turbo/
+supabase/.temp/
 
 # IDE
 .vscode/
