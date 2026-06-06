@@ -15,8 +15,8 @@ export default function AdminRoutePage() {
     let active = true;
 
     async function checkAuth() {
-      // 1. Verificar primero en localStorage (rápido para UX)
       try {
+        // 1. Obtener sesión local de localStorage
         const localSession = window.localStorage.getItem("syncut_beta_session");
         if (!localSession) {
           if (active) {
@@ -31,8 +31,52 @@ export default function AdminRoutePage() {
         if (active) {
           setCurrentUserEmail(parsed?.email || "No identificado");
         }
-        
-        if (email !== "jassiel.rr1502@gmail.com") {
+
+        // 2. Verificar de forma segura contra la sesión de Supabase Auth
+        const hasEnv =
+          Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL) &&
+          Boolean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+        if (hasEnv) {
+          const supabase = createSupabaseBrowserClient();
+
+          // A. Intentar por usuario autenticado en Supabase Auth
+          const { data: { user } } = await supabase.auth.getUser();
+          
+          if (user) {
+            const { data: profile, error } = await supabase
+              .from("profiles")
+              .select("role")
+              .eq("id", user.id)
+              .single();
+
+            if (!error && profile && profile.role === "admin") {
+              if (active) {
+                setAuthorized(true);
+                setLoading(false);
+              }
+              return;
+            }
+          }
+
+          // B. Fallback: Buscar en la tabla profiles por correo de la sesión local
+          if (email) {
+            const { data: profile, error } = await supabase
+              .from("profiles")
+              .select("role")
+              .eq("email", email)
+              .single();
+
+            if (!error && profile && profile.role === "admin") {
+              if (active) {
+                setAuthorized(true);
+                setLoading(false);
+              }
+              return;
+            }
+          }
+
+          // Si la DB está conectada pero el rol no es admin
           if (active) {
             setAuthorized(false);
             setLoading(false);
@@ -40,16 +84,10 @@ export default function AdminRoutePage() {
           return;
         }
 
-        // 2. Verificar de forma segura contra la sesión de Supabase Auth si está configurada
-        const hasEnv =
-          Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL) &&
-          Boolean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-
-
-
-        // Acceso concedido
+        // 3. Fallback absoluto si no hay variables de entorno (modo offline mockup)
+        const isMockAdmin = email === "jassiel.rr1502@gmail.com" || parsed?.role === "admin" || email?.includes("admin");
         if (active) {
-          setAuthorized(true);
+          setAuthorized(isMockAdmin);
           setLoading(false);
         }
       } catch {
@@ -88,7 +126,7 @@ export default function AdminRoutePage() {
           Acceso Restringido
         </h2>
         <p className="text-on-surface-variant text-sm leading-relaxed mb-4">
-          Esta zona de gobernanza del proyecto está reservada exclusivamente para el administrador master (<strong>jassiel.rr1502@gmail.com</strong>). Tu usuario actual no tiene privilegios suficientes.
+          Esta zona de gobernanza está reservada exclusivamente para usuarios con el rol de <strong>admin</strong> en la base de datos. Tu usuario actual no tiene privilegios suficientes.
         </p>
         <p className="w-full text-on-surface-variant text-xs bg-surface-container-high border border-outline-variant rounded p-3 mb-6 font-mono truncate">
           Usuario actual: <span className="text-primary font-bold">{currentUserEmail || "No identificado"}</span>
