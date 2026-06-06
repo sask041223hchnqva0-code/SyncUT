@@ -9,8 +9,8 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build",
+    "dev": "node scripts/generate-git-stats.js && turbo run dev",
+    "build": "node scripts/generate-git-stats.js && turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
