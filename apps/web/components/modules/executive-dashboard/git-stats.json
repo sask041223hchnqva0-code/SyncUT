@@ -1,5 +1,5 @@
 {
-  "totalCommits": 58,
+  "totalCommits": 60,
   "totalPRs": 8,
   "mergedPRs": 8,
   "openPRs": 0,
@@ -64,22 +64,46 @@
   "commitsByWeek": [
     {
       "week": "W-3",
-      "commits": 0
+      "commits": 29
     },
     {
       "week": "W-2",
-      "commits": 25
+      "commits": 0
     },
     {
       "week": "W-1",
-      "commits": 4
+      "commits": 31
     },
     {
       "week": "Actual",
-      "commits": 29
+      "commits": 0
     }
   ],
   "recentActivities": [
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "feat(admin): implement dynamic role validation via Supabase profiles table, removing hardcoded email checks",
+      "module": "Notificaciones",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "05-jun",
+      "time": "19:19",
+      "status": "Completado",
+      "impact": "Alto"
+    },
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "feat(admin): fetch pull requests from GitHub and compute module progress dynamically",
+      "module": "Dashboard Base",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "05-jun",
+      "time": "19:13",
+      "status": "Completado",
+      "impact": "Alto"
+    },
     {
       "user": "Jassiel García",
       "action": "validation",
@@ -237,30 +261,6 @@
       "impact": "Medio"
     },
     {
-      "user": "Jassiel García",
-      "action": "merge",
-      "description": "Merge pull request #5 from panadero414/feature/squad-1-justifications",
-      "module": "Justificaciones",
-      "squad": "Admin Master",
-      "sprint": "Sprint 3",
-      "date": "03-jun",
-      "time": "18:23",
-      "status": "Completado",
-      "impact": "Alto"
-    },
-    {
-      "user": "Jassiel García",
-      "action": "validation",
-      "description": "chore: finalize CI/tooling alignment and pnpm hygiene",
-      "module": "Dashboard Base",
-      "squad": "Admin Master",
-      "sprint": "Sprint 3",
-      "date": "03-jun",
-      "time": "18:11",
-      "status": "Completado",
-      "impact": "Medio"
-    },
-    {
       "user": "Langostin",
       "action": "approval",
       "description": "Pull Request #8: prueba pull request (Estado: CLOSED)",
@@ -326,9 +326,9 @@
       "name": "Jassiel García",
       "squad": "Admin Master",
       "role": "Project Lead",
-      "tasks": 49,
+      "tasks": 51,
       "progress": 100,
-      "weekly": "49 cambios",
+      "weekly": "51 cambios",
       "prs": 3,
       "status": "activo"
     },
