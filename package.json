@@ -10,7 +10,7 @@
   "type": "module",
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
+    "build": "pnpm stats:generate && turbo run build",
     "stats:generate": "node scripts/generate-git-stats.js",
     "test": "turbo run test",
     "lint": "turbo run lint",

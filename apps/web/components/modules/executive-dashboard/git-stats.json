@@ -1,7 +1,10 @@
 {
-  "totalCommits": 58,
-  "totalPRs": 8,
-  "mergedPRs": 8,
+  "generatedAt": "2026-06-18T23:53:05.674Z",
+  "headCommit": "3e8bf3c9ee0ede88d20d39c9ce55d4219a3e488e",
+  "githubAvailable": true,
+  "totalCommits": 62,
+  "totalPRs": 10,
+  "mergedPRs": 9,
   "openPRs": 0,
   "commitsBySquad": [
     {
@@ -27,6 +30,10 @@
     {
       "squad": "S6 (Chatbot)",
       "progreso": 0
+    },
+    {
+      "squad": "Admin (Dashboard Gobernanza)",
+      "progreso": 53
     }
   ],
   "prsBySquad": [
@@ -37,8 +44,8 @@
     },
     {
       "squad": "S2 (Autenticación)",
-      "total": 0,
-      "closed": 0
+      "total": 1,
+      "closed": 1
     },
     {
       "squad": "S3 (Citas)",
@@ -57,29 +64,82 @@
     },
     {
       "squad": "S6 (Chatbot)",
-      "total": 0,
-      "closed": 0
+      "total": 1,
+      "closed": 1
+    },
+    {
+      "squad": "Admin (Dashboard Gobernanza)",
+      "total": 3,
+      "closed": 2
     }
   ],
   "commitsByWeek": [
     {
       "week": "W-3",
-      "commits": 0
-    },
-    {
-      "week": "W-2",
-      "commits": 25
-    },
-    {
-      "week": "W-1",
       "commits": 4
     },
     {
+      "week": "W-2",
+      "commits": 23
+    },
+    {
+      "week": "W-1",
+      "commits": 8
+    },
+    {
       "week": "Actual",
-      "commits": 29
+      "commits": 2
     }
   ],
   "recentActivities": [
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "chore(security): finalize legacy key revocation",
+      "module": "Dashboard Base",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "18-jun",
+      "time": "15:17",
+      "status": "Completado",
+      "impact": "Medio"
+    },
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "feat(core): harden auth, roles and platform security",
+      "module": "Autenticación",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "18-jun",
+      "time": "14:27",
+      "status": "Completado",
+      "impact": "Alto"
+    },
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "feat(admin): implement dynamic role validation via Supabase profiles table, removing hardcoded email checks",
+      "module": "Notificaciones",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "05-jun",
+      "time": "19:19",
+      "status": "Completado",
+      "impact": "Alto"
+    },
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "feat(admin): fetch pull requests from GitHub and compute module progress dynamically",
+      "module": "Dashboard Base",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "05-jun",
+      "time": "19:13",
+      "status": "Completado",
+      "impact": "Alto"
+    },
     {
       "user": "Jassiel García",
       "action": "validation",
@@ -213,52 +273,28 @@
       "impact": "Alto"
     },
     {
-      "user": "Ángel Zataráin",
-      "action": "test",
-      "description": "develop-test",
-      "module": "Dashboard Base",
+      "user": "Langostin",
+      "action": "approval",
+      "description": "Pull Request #10: Feature/squad 2 authentication (Estado: CLOSED)",
+      "module": "Autenticación",
       "squad": "Squad 2",
       "sprint": "Sprint 3",
-      "date": "01-jun",
-      "time": "21:29",
-      "status": "Completado",
-      "impact": "Medio"
-    },
-    {
-      "user": "Osmara Araujo",
-      "action": "validation",
-      "description": "docs: define modulo 5 incidencias y reglas semaforo semanal",
-      "module": "Incidencias",
-      "squad": "Squad 5",
-      "sprint": "Sprint 3",
-      "date": "02-jun",
-      "time": "20:36",
-      "status": "Completado",
-      "impact": "Medio"
-    },
-    {
-      "user": "Jassiel García",
-      "action": "merge",
-      "description": "Merge pull request #5 from panadero414/feature/squad-1-justifications",
-      "module": "Justificaciones",
-      "squad": "Admin Master",
-      "sprint": "Sprint 3",
-      "date": "03-jun",
-      "time": "18:23",
-      "status": "Completado",
+      "date": "15-jun",
+      "time": "21:28",
+      "status": "Fusionado",
       "impact": "Alto"
     },
     {
-      "user": "Jassiel García",
-      "action": "validation",
-      "description": "chore: finalize CI/tooling alignment and pnpm hygiene",
-      "module": "Dashboard Base",
-      "squad": "Admin Master",
+      "user": "ReyMarroquin",
+      "action": "approval",
+      "description": "Pull Request #9: Prueba de push a rama feature/squad-6-chatbot (Estado: CLOSED)",
+      "module": "Chatbot",
+      "squad": "Squad 6",
       "sprint": "Sprint 3",
-      "date": "03-jun",
-      "time": "18:11",
-      "status": "Completado",
-      "impact": "Medio"
+      "date": "15-jun",
+      "time": "19:25",
+      "status": "Fusionado",
+      "impact": "Alto"
     },
     {
       "user": "Langostin",
@@ -269,7 +305,7 @@
       "sprint": "Sprint 3",
       "date": "05-jun",
       "time": "11:59",
-      "status": "Fucionado",
+      "status": "Fusionado",
       "impact": "Alto"
     },
     {
@@ -281,7 +317,7 @@
       "sprint": "Sprint 3",
       "date": "03-jun",
       "time": "18:32",
-      "status": "Fucionado",
+      "status": "Fusionado",
       "impact": "Alto"
     },
     {
@@ -293,31 +329,7 @@
       "sprint": "Sprint 3",
       "date": "03-jun",
       "time": "18:31",
-      "status": "Fucionado",
-      "impact": "Alto"
-    },
-    {
-      "user": "panadero414",
-      "action": "approval",
-      "description": "Pull Request #5: Feature/squad 1 justifications (Estado: CLOSED)",
-      "module": "Justificaciones",
-      "squad": "Squad 1",
-      "sprint": "Sprint 3",
-      "date": "03-jun",
-      "time": "18:10",
-      "status": "Fucionado",
-      "impact": "Alto"
-    },
-    {
-      "user": "Osmi29",
-      "action": "approval",
-      "description": "Pull Request #4:  define modulo 5 incidencias y reglas semaforo semanal (Estado: CLOSED)",
-      "module": "Incidencias",
-      "squad": "Squad 5",
-      "sprint": "Sprint 3",
-      "date": "02-jun",
-      "time": "21:22",
-      "status": "Fucionado",
+      "status": "Fusionado",
       "impact": "Alto"
     }
   ],
@@ -326,9 +338,9 @@
       "name": "Jassiel García",
       "squad": "Admin Master",
       "role": "Project Lead",
-      "tasks": 49,
+      "tasks": 53,
       "progress": 100,
-      "weekly": "49 cambios",
+      "weekly": "53 cambios",
       "prs": 3,
       "status": "activo"
     },
@@ -337,7 +349,7 @@
       "squad": "Squad 1",
       "role": "Tech Lead Justificaciones",
       "tasks": 3,
-      "progress": 64,
+      "progress": 30,
       "weekly": "3 cambios",
       "prs": 1,
       "status": "activo"
@@ -347,7 +359,7 @@
       "squad": "Squad 3",
       "role": "Tech Lead Citas",
       "tasks": 2,
-      "progress": 56,
+      "progress": 20,
       "weekly": "2 cambios",
       "prs": 1,
       "status": "activo"
@@ -357,9 +369,9 @@
       "squad": "Squad 2",
       "role": "Tech Lead Auditoría",
       "tasks": 1,
-      "progress": 48,
+      "progress": 10,
       "weekly": "1 cambios",
-      "prs": 1,
+      "prs": 0,
       "status": "activo"
     },
     {
@@ -367,7 +379,7 @@
       "squad": "Squad 5",
       "role": "Tech Lead Incidencias",
       "tasks": 1,
-      "progress": 48,
+      "progress": 10,
       "weekly": "1 cambios",
       "prs": 1,
       "status": "activo"
@@ -377,9 +389,9 @@
       "squad": "Squad 4",
       "role": "Tech Lead Notificaciones",
       "tasks": 1,
-      "progress": 48,
+      "progress": 10,
       "weekly": "1 cambios",
-      "prs": 1,
+      "prs": 0,
       "status": "activo"
     },
     {
@@ -387,7 +399,7 @@
       "squad": "Squad 1",
       "role": "QA Engineer Justificaciones",
       "tasks": 1,
-      "progress": 48,
+      "progress": 10,
       "weekly": "1 cambios",
       "prs": 1,
       "status": "activo"
