@@ -37,3 +37,6 @@ pnpm build
 pnpm db:test
 pnpm db:test:security
 ```
+```## Prueba de Front End
+
+Se realizó una prueba de integración para el desarrollo del Front End.
