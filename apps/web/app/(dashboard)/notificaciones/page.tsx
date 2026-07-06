@@ -162,7 +162,7 @@ export default async function NotificacionesPage({
         </div>
       </section>
 
-      <section className="rounded-lg border border-outline-variant bg-surface-container p-5">
+      <section id="preferencias" className="rounded-lg border border-outline-variant bg-surface-container p-5 scroll-mt-24">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-sm font-semibold uppercase text-on-surface-variant">Bandeja</h2>
           <div className="flex flex-wrap gap-2">
