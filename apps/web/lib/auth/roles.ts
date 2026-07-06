@@ -11,12 +11,20 @@ export type UserRole = (typeof USER_ROLES)[number];
 export type RolePermission =
   | "dashboard:view"
   | "justifications:create"
-  | "justifications:review"
+  | "justifications:academic_note"
+  | "justifications:tutor_followup"
+  | "justifications:resolve"
   | "appointments:create"
-  | "appointments:manage"
+  | "appointments:availability"
+  | "appointments:confirm"
+  | "appointments:attendance"
+  | "appointments:session_note"
+  | "appointments:oversight"
   | "notifications:view"
   | "incidents:create"
-  | "incidents:manage"
+  | "incidents:comment"
+  | "incidents:assign"
+  | "incidents:resolve"
   | "chatbot:use"
   | "chatbot:manage"
   | "governance:view";
@@ -39,9 +47,9 @@ export const ROLE_LABELS: Record<UserRole, string> = {
 
 export const ROLE_DESCRIPTIONS: Record<UserRole, string> = {
   student: "Solicita citas, registra justificaciones y da seguimiento a sus reportes.",
-  teacher: "Atiende incidencias academicas, valida contexto de materias y registra seguimiento.",
-  tutor: "Gestiona tutorias, revisa solicitudes de estudiantes asignados y acompana casos escalados.",
-  coordinator: "Supervisa flujo operativo, reasigna casos y mantiene el seguimiento institucional.",
+  teacher: "Valida contexto academico, aporta evidencia docente y comenta incidencias asignadas.",
+  tutor: "Gestiona disponibilidad, confirma tutorias, registra asistencia y acompana estudiantes.",
+  coordinator: "Resuelve justificaciones, asigna incidencias y supervisa el flujo institucional.",
   admin: "Gobierna roles, datos, seguridad, auditoria y salud completa de la plataforma.",
 };
 
@@ -87,38 +95,49 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly RolePermission[]> = {
   ],
   teacher: [
     "dashboard:view",
-    "justifications:review",
-    "appointments:manage",
+    "justifications:academic_note",
     "notifications:view",
-    "incidents:manage",
+    "incidents:comment",
     "chatbot:use",
   ],
   tutor: [
     "dashboard:view",
-    "justifications:review",
-    "appointments:manage",
+    "justifications:tutor_followup",
+    "appointments:availability",
+    "appointments:confirm",
+    "appointments:attendance",
+    "appointments:session_note",
     "notifications:view",
-    "incidents:manage",
+    "incidents:comment",
     "chatbot:use",
   ],
   coordinator: [
     "dashboard:view",
-    "justifications:review",
-    "appointments:manage",
+    "justifications:resolve",
+    "appointments:oversight",
     "notifications:view",
-    "incidents:manage",
+    "incidents:assign",
+    "incidents:resolve",
     "chatbot:use",
     "chatbot:manage",
   ],
   admin: [
     "dashboard:view",
     "justifications:create",
-    "justifications:review",
+    "justifications:academic_note",
+    "justifications:tutor_followup",
+    "justifications:resolve",
     "appointments:create",
-    "appointments:manage",
+    "appointments:availability",
+    "appointments:confirm",
+    "appointments:attendance",
+    "appointments:session_note",
+    "appointments:oversight",
     "notifications:view",
     "incidents:create",
-    "incidents:manage",
+    "incidents:comment",
+    "incidents:assign",
+    "incidents:resolve",
     "chatbot:use",
     "chatbot:manage",
     "governance:view",
@@ -127,10 +146,22 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly RolePermission[]> = {
 
 export const ROLE_MODULES: readonly RoleModule[] = [
   { href: "/dashboard", label: "Dashboard", icon: "dashboard", permissions: ["dashboard:view"] },
-  { href: "/justificaciones", label: "Justificaciones", icon: "gavel", squad: "Squad 1", permissions: ["justifications:create", "justifications:review"] },
-  { href: "/citas", label: "Citas con Tutor", icon: "calendar_month", squad: "Squad 3", permissions: ["appointments:create", "appointments:manage"] },
+  {
+    href: "/justificaciones",
+    label: "Justificaciones",
+    icon: "gavel",
+    squad: "Squad 1",
+    permissions: ["justifications:create", "justifications:academic_note", "justifications:tutor_followup", "justifications:resolve"],
+  },
+  {
+    href: "/citas",
+    label: "Citas con Tutor",
+    icon: "calendar_month",
+    squad: "Squad 3",
+    permissions: ["appointments:create", "appointments:availability", "appointments:confirm", "appointments:attendance", "appointments:session_note", "appointments:oversight"],
+  },
   { href: "/notificaciones", label: "Notificaciones", icon: "notifications", squad: "Squad 4", permissions: ["notifications:view"] },
-  { href: "/incidencias", label: "Reportes Incidencias", icon: "rule", squad: "Squad 5", permissions: ["incidents:create", "incidents:manage"] },
+  { href: "/incidencias", label: "Reportes Incidencias", icon: "rule", squad: "Squad 5", permissions: ["incidents:create", "incidents:comment", "incidents:assign", "incidents:resolve"] },
   { href: "/chatbot", label: "Asistente Chatbot", icon: "chat", squad: "Squad 6", permissions: ["chatbot:use", "chatbot:manage"] },
   { href: "/admin", label: "Panel Gobernanza", icon: "monitoring", squad: "Admin Master", permissions: ["governance:view"] },
 ];

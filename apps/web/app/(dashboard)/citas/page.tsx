@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import type { Tables } from "@plataforma/types";
 
 import { requireProfile } from "@/lib/auth/session";
+import { hasPermission, type UserRole } from "@/lib/auth/roles";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 type AppointmentStatus = Tables<"appointments">["status"];
@@ -67,7 +68,6 @@ function isAttendanceStatus(value: string): value is AttendanceStatus {
   return ["attended", "no_show", "excused_absence"].includes(value);
 }
 
-//Holaaaaaaaa alan
 function toMinutes(value: string) {
   const [hours, minutes] = value.split(":").map(Number);
   return hours * 60 + minutes;
@@ -89,10 +89,31 @@ function isAllowedTransition(current: AppointmentStatus, next: AppointmentStatus
   return allowed[current].includes(next);
 }
 
+function canControlAppointment(
+  role: UserRole,
+  profileId: string,
+  appointment: Pick<Tables<"appointments">, "student_id" | "tutor_id">,
+  nextStatus: AppointmentStatus,
+) {
+  if (hasPermission(role, "appointments:oversight")) {
+    return true;
+  }
+
+  if (hasPermission(role, "appointments:confirm") && appointment.tutor_id === profileId) {
+    return ["confirmada", "completada", "cancelada", "no_asistio"].includes(nextStatus);
+  }
+
+  return nextStatus === "cancelada" && appointment.student_id === profileId;
+}
+
 async function createAppointment(formData: FormData) {
   "use server";
 
   const profile = await requireProfile();
+  if (profile.role !== "student") {
+    return;
+  }
+
   const supabase = await createSupabaseServerClient();
 
   const tutorId = String(formData.get("tutor_id") ?? "");
@@ -203,11 +224,15 @@ async function updateAppointmentStatus(formData: FormData) {
 
   const { data: current } = await supabase
     .from("appointments")
-    .select("status")
+    .select("student_id, tutor_id, status")
     .eq("id", id)
     .maybeSingle();
 
   if (!current || !isAllowedTransition(current.status, status)) {
+    return;
+  }
+
+  if (!canControlAppointment(profile.role, profile.id, current, status)) {
     return;
   }
 
@@ -257,7 +282,7 @@ async function createAvailability(formData: FormData) {
   const profile = await requireProfile();
   const supabase = await createSupabaseServerClient();
 
-  if (!["teacher", "tutor", "admin", "coordinator"].includes(profile.role)) {
+  if (!hasPermission(profile.role, "appointments:availability") || profile.role !== "tutor") {
     return;
   }
 
@@ -287,11 +312,28 @@ async function createAvailability(formData: FormData) {
 async function deactivateAvailability(formData: FormData) {
   "use server";
 
-  await requireProfile();
+  const profile = await requireProfile();
   const supabase = await createSupabaseServerClient();
   const id = String(formData.get("id") ?? "");
 
   if (!id) {
+    return;
+  }
+
+  const { data: slot } = await supabase
+    .from("tutor_availability")
+    .select("tutor_id")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (!slot) {
+    return;
+  }
+
+  const canDeactivate =
+    slot.tutor_id === profile.id || hasPermission(profile.role, "appointments:oversight");
+
+  if (!canDeactivate) {
     return;
   }
 
@@ -313,6 +355,23 @@ async function createSessionNote(formData: FormData) {
     return;
   }
 
+  const { data: appointment } = await supabase
+    .from("appointments")
+    .select("student_id, tutor_id")
+    .eq("id", appointmentId)
+    .maybeSingle();
+
+  const canWriteNote =
+    appointment &&
+    (
+      hasPermission(profile.role, "appointments:oversight") ||
+      (hasPermission(profile.role, "appointments:session_note") && appointment.tutor_id === profile.id)
+    );
+
+  if (!canWriteNote) {
+    return;
+  }
+
   const { error } = await supabase.from("tutoring_session_notes").insert({
     appointment_id: appointmentId,
     author_id: profile.id,
@@ -328,12 +387,6 @@ async function createSessionNote(formData: FormData) {
       event_type: "note_added",
       note: "Seguimiento de tutoría registrado.",
     });
-    const { data: appointment } = await supabase
-      .from("appointments")
-      .select("student_id, tutor_id")
-      .eq("id", appointmentId)
-      .maybeSingle();
-
     if (appointment) {
       const targetUserId = profile.id === appointment.student_id ? appointment.tutor_id : appointment.student_id;
       await supabase.rpc("emit_notification", {
@@ -358,10 +411,6 @@ async function recordAttendance(formData: FormData) {
   const profile = await requireProfile();
   const supabase = await createSupabaseServerClient();
 
-  if (!["admin", "coordinator", "teacher", "tutor"].includes(profile.role)) {
-    return;
-  }
-
   const appointmentId = String(formData.get("appointment_id") ?? "");
   const statusValue = String(formData.get("attendance_status") ?? "");
   const notes = String(formData.get("notes") ?? "").trim();
@@ -377,6 +426,14 @@ async function recordAttendance(formData: FormData) {
     .maybeSingle();
 
   if (!appointment) {
+    return;
+  }
+
+  const canRecord =
+    hasPermission(profile.role, "appointments:oversight") ||
+    (hasPermission(profile.role, "appointments:attendance") && appointment.tutor_id === profile.id);
+
+  if (!canRecord) {
     return;
   }
 
@@ -432,8 +489,9 @@ async function recordAttendance(formData: FormData) {
 export default async function CitasPage() {
   const profile = await requireProfile();
   const supabase = await createSupabaseServerClient();
-  const isStaff = ["admin", "coordinator", "teacher", "tutor"].includes(profile.role);
-  const canManageOwnAvailability = ["admin", "coordinator", "teacher", "tutor"].includes(profile.role);
+  const canCreateAppointments = profile.role === "student";
+  const canManageOwnAvailability = profile.role === "tutor" && hasPermission(profile.role, "appointments:availability");
+  const canOverseeAppointments = hasPermission(profile.role, "appointments:oversight");
 
   const [
     { data: appointmentsData, error: appointmentsError },
@@ -609,6 +667,7 @@ export default async function CitasPage() {
           </form>
         ) : null}
 
+        {canCreateAppointments ? (
         <form action={createAppointment} className="rounded-lg border border-outline-variant bg-surface-container p-5">
           <h2 className="text-sm font-semibold uppercase text-on-surface-variant">Nueva cita</h2>
 
@@ -679,6 +738,20 @@ export default async function CitasPage() {
             Solicitar cita
           </button>
         </form>
+        ) : (
+          <section className="rounded-lg border border-outline-variant bg-surface-container p-5">
+            <h2 className="text-sm font-semibold uppercase text-on-surface-variant">Rol en agenda</h2>
+            <p className="mt-3 text-sm text-on-surface-variant">
+              {profile.role === "tutor"
+                ? "Tu flujo es publicar disponibilidad, confirmar citas, registrar asistencia y dejar seguimiento."
+                : profile.role === "coordinator"
+                  ? "Tu flujo es supervisar agenda, validar estados y desactivar bloques cuando sea necesario."
+                  : profile.role === "teacher"
+                    ? "El docente no agenda tutorias; aporta contexto academico desde justificaciones e incidencias."
+                    : "El administrador conserva visibilidad operativa y auditoria de agenda."}
+            </p>
+          </section>
+        )}
         </div>
 
         <section className="rounded-lg border border-outline-variant bg-surface-container p-5">
@@ -736,10 +809,10 @@ export default async function CitasPage() {
                   </div>
                 ) : null}
 
-                {isStaff || item.student_id === profile.id ? (
+                {(canOverseeAppointments || item.tutor_id === profile.id || item.student_id === profile.id) ? (
                   <form action={updateAppointmentStatus} className="mt-4 flex flex-wrap gap-2">
                     <input type="hidden" name="id" value={item.id} />
-                    {isStaff ? (
+                    {(canOverseeAppointments || item.tutor_id === profile.id) ? (
                       <>
                         <button name="status" value="confirmada" className="rounded border border-primary px-3 py-2 text-xs font-semibold text-primary">
                           Confirmar
@@ -766,7 +839,7 @@ export default async function CitasPage() {
                       {attendanceRecord.recorded_at ? ` | ${new Date(attendanceRecord.recorded_at).toLocaleString("es-MX")}` : ""}
                     </p>
                   </div>
-                ) : isStaff && item.status === "confirmada" ? (
+                ) : (canOverseeAppointments || item.tutor_id === profile.id) && item.status === "confirmada" ? (
                   <form action={recordAttendance} className="mt-4 rounded border border-outline-variant bg-surface-container p-3">
                     <input type="hidden" name="appointment_id" value={item.id} />
                     <p className="text-xs font-semibold uppercase text-on-surface-variant">Registrar asistencia</p>
@@ -801,7 +874,7 @@ export default async function CitasPage() {
                       Capturo: {sessionNote.author?.full_name ?? sessionNote.author?.email ?? "Usuario visible por RLS"}
                     </p>
                   </div>
-                ) : isStaff && item.status === "completada" ? (
+                ) : (canOverseeAppointments || item.tutor_id === profile.id) && item.status === "completada" ? (
                   <form action={createSessionNote} className="mt-4 rounded border border-outline-variant bg-surface-container p-3">
                     <input type="hidden" name="appointment_id" value={item.id} />
                     <p className="text-xs font-semibold uppercase text-on-surface-variant">Registrar seguimiento</p>
@@ -878,7 +951,7 @@ export default async function CitasPage() {
                 {dayLabels[slot.day_of_week]} | {slot.starts_at.slice(0, 5)}-{slot.ends_at.slice(0, 5)} | {slot.modality}
               </p>
               {slot.location ? <p className="mt-1 text-xs text-on-surface-variant">{slot.location}</p> : null}
-              {slot.tutor_id === profile.id || profile.role === "admin" || profile.role === "coordinator" ? (
+              {slot.tutor_id === profile.id || canOverseeAppointments ? (
                 <form action={deactivateAvailability} className="mt-3">
                   <input type="hidden" name="id" value={slot.id} />
                   <button className="rounded border border-error px-3 py-2 text-xs font-semibold text-error">

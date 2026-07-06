@@ -34,6 +34,11 @@ describe("role helpers", () => {
     expect(hasPermission("student", "justifications:create")).toBe(true);
     expect(hasPermission("student", "governance:view")).toBe(false);
     expect(hasPermission("coordinator", "chatbot:manage")).toBe(true);
+    expect(hasPermission("teacher", "justifications:academic_note")).toBe(true);
+    expect(hasPermission("teacher", "justifications:resolve")).toBe(false);
+    expect(hasPermission("tutor", "appointments:availability")).toBe(true);
+    expect(hasPermission("tutor", "incidents:assign")).toBe(false);
+    expect(hasPermission("coordinator", "incidents:assign")).toBe(true);
 
     const adminModule = ROLE_MODULES.find((module) => module.href === "/admin");
     expect(adminModule).toBeDefined();

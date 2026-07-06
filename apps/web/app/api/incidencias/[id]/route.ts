@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
+import { hasPermission, toUserRole } from "@/lib/auth/roles";
 import { createSupabaseRequestClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -46,7 +47,7 @@ async function getIncidentId(context: RouteContext) {
   return params.id;
 }
 
-async function requireStaff(
+async function requireIncidentResolver(
   supabase: Awaited<ReturnType<typeof createSupabaseRequestClient>>["supabase"],
   userId: string,
 ) {
@@ -60,7 +61,7 @@ async function requireStaff(
     return false;
   }
 
-  return ["admin", "coordinator", "tutor", "teacher"].includes(data.role);
+  return hasPermission(toUserRole(data.role), "incidents:resolve");
 }
 
 function validationError(error: z.ZodError) {
@@ -145,12 +146,12 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     );
   }
 
-  const isStaff = await requireStaff(supabase, user.id);
+  const canResolveIncident = await requireIncidentResolver(supabase, user.id);
 
-  if (!isStaff) {
+  if (!canResolveIncident) {
     return NextResponse.json(
       {
-        error: "Solo staff puede actualizar incidencias",
+        error: "Solo coordinacion o administracion puede resolver incidencias",
       },
       { status: 403 },
     );

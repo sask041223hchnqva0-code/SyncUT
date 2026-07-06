@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import type { Tables } from "@plataforma/types";
 
 import { requireProfile } from "@/lib/auth/session";
+import { hasPermission } from "@/lib/auth/roles";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 type JustificationStatus = NonNullable<Tables<"justifications">["status"]>;
@@ -66,6 +67,10 @@ async function createJustification(formData: FormData) {
   "use server";
 
   const profile = await requireProfile();
+  if (profile.role !== "student") {
+    return;
+  }
+
   const supabase = await createSupabaseServerClient();
 
   const categoryValue = String(formData.get("category") ?? "personal");
@@ -146,10 +151,6 @@ async function updateJustificationStatus(formData: FormData) {
   "use server";
 
   const profile = await requireProfile();
-  if (!["admin", "coordinator", "teacher", "tutor"].includes(profile.role)) {
-    return;
-  }
-
   const supabase = await createSupabaseServerClient();
   const id = String(formData.get("id") ?? "");
   const nextStatusValue = String(formData.get("status") ?? "");
@@ -157,6 +158,15 @@ async function updateJustificationStatus(formData: FormData) {
   const reviewNotes = String(formData.get("review_notes") ?? "").trim();
 
   if (!id || !nextStatus) {
+    return;
+  }
+
+  const canResolve = hasPermission(profile.role, "justifications:resolve");
+  const canRequestInfo =
+    hasPermission(profile.role, "justifications:tutor_followup") &&
+    nextStatus === "requires_more_info";
+
+  if (!canResolve && !canRequestInfo) {
     return;
   }
 
@@ -217,6 +227,15 @@ async function addReviewNote(formData: FormData) {
   "use server";
 
   const profile = await requireProfile();
+  const canAddNote =
+    hasPermission(profile.role, "justifications:academic_note") ||
+    hasPermission(profile.role, "justifications:tutor_followup") ||
+    hasPermission(profile.role, "justifications:resolve");
+
+  if (!canAddNote) {
+    return;
+  }
+
   const supabase = await createSupabaseServerClient();
   const id = String(formData.get("id") ?? "");
   const note = String(formData.get("note") ?? "").trim();
@@ -243,7 +262,13 @@ export default async function JustificacionesPage({
   const profile = await requireProfile();
   const params = await searchParams;
   const supabase = await createSupabaseServerClient();
-  const canReview = ["admin", "coordinator", "teacher", "tutor"].includes(profile.role);
+  const canCreateJustification = profile.role === "student";
+  const canResolveJustifications = hasPermission(profile.role, "justifications:resolve");
+  const canRequestMoreInfo = hasPermission(profile.role, "justifications:tutor_followup") || canResolveJustifications;
+  const canAddReviewNote =
+    hasPermission(profile.role, "justifications:academic_note") ||
+    hasPermission(profile.role, "justifications:tutor_followup") ||
+    canResolveJustifications;
 
   let query = supabase
     .from("justifications")
@@ -400,6 +425,7 @@ export default async function JustificacionesPage({
             </div>
           </form>
 
+          {canCreateJustification ? (
           <form action={createJustification} className="rounded-lg border border-outline-variant bg-surface-container p-5">
             <h2 className="text-sm font-semibold uppercase text-on-surface-variant">Nueva solicitud</h2>
             <div className="mt-4 space-y-3">
@@ -427,6 +453,18 @@ export default async function JustificacionesPage({
               </button>
             </div>
           </form>
+          ) : (
+            <section className="rounded-lg border border-outline-variant bg-surface-container p-5">
+              <h2 className="text-sm font-semibold uppercase text-on-surface-variant">Rol en justificaciones</h2>
+              <p className="mt-3 text-sm text-on-surface-variant">
+                {profile.role === "teacher"
+                  ? "Aporta contexto de materia, asistencia y evidencia academica. No aprueba ni rechaza."
+                  : profile.role === "tutor"
+                    ? "Da seguimiento al estudiante y puede solicitar informacion adicional antes de escalar."
+                    : "Coordinacion o administracion resuelven el expediente con aprobacion, rechazo o solicitud de informacion."}
+              </p>
+            </section>
+          )}
         </aside>
 
         <section className="space-y-4">
@@ -502,25 +540,32 @@ export default async function JustificacionesPage({
                   </div>
 
                   <div className="space-y-3">
-                    {canReview ? (
+                    {(canResolveJustifications || canRequestMoreInfo) ? (
                       <form action={updateJustificationStatus} className="rounded border border-outline-variant bg-surface p-4">
                         <input type="hidden" name="id" value={item.id} />
                         <h3 className="text-xs font-semibold uppercase text-on-surface-variant">Revision</h3>
                         <textarea name="review_notes" rows={3} placeholder="Nota para el alumno" className="mt-3 w-full rounded border border-outline-variant bg-surface-container px-3 py-2 text-sm text-on-surface" />
                         <div className="mt-3 grid grid-cols-1 gap-2">
-                          <button name="status" value="approved" className="rounded border border-emerald-300 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800">
-                            Aprobar
-                          </button>
-                          <button name="status" value="requires_more_info" className="rounded border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
-                            Solicitar informacion
-                          </button>
-                          <button name="status" value="rejected" className="rounded border border-rose-300 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-800">
-                            Rechazar
-                          </button>
+                          {canResolveJustifications ? (
+                            <button name="status" value="approved" className="rounded border border-emerald-300 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-800">
+                              Aprobar
+                            </button>
+                          ) : null}
+                          {canRequestMoreInfo ? (
+                            <button name="status" value="requires_more_info" className="rounded border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
+                              Solicitar informacion
+                            </button>
+                          ) : null}
+                          {canResolveJustifications ? (
+                            <button name="status" value="rejected" className="rounded border border-rose-300 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-800">
+                              Rechazar
+                            </button>
+                          ) : null}
                         </div>
                       </form>
                     ) : null}
 
+                    {canAddReviewNote ? (
                     <form action={addReviewNote} className="rounded border border-outline-variant bg-surface p-4">
                       <input type="hidden" name="id" value={item.id} />
                       <h3 className="text-xs font-semibold uppercase text-on-surface-variant">Agregar nota</h3>
@@ -529,6 +574,7 @@ export default async function JustificacionesPage({
                         Guardar nota
                       </button>
                     </form>
+                    ) : null}
                   </div>
                 </div>
               </article>

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-04T00:16:54.219Z",
-  "headCommit": "b179a450db73f31dcb9e132a739ede7398bd5738",
+  "generatedAt": "2026-07-06T16:41:05.936Z",
+  "headCommit": "e2ebb46d807a0672d286617f019f1ae55346c0cb",
   "githubAvailable": true,
-  "totalCommits": 131,
+  "totalCommits": 138,
   "totalPRs": 22,
   "mergedPRs": 21,
   "openPRs": 0,
@@ -13,7 +13,7 @@
     },
     {
       "squad": "S2 (Autenticación)",
-      "progreso": 23
+      "progreso": 24
     },
     {
       "squad": "S3 (Citas)",
@@ -25,15 +25,15 @@
     },
     {
       "squad": "S5 (Incidencias)",
-      "progreso": 11
+      "progreso": 12
     },
     {
       "squad": "S6 (Chatbot)",
-      "progreso": 6
+      "progreso": 7
     },
     {
       "squad": "Admin (Dashboard Gobernanza)",
-      "progreso": 60
+      "progreso": 64
     }
   ],
   "prsBySquad": [
@@ -76,19 +76,19 @@
   "commitsByWeek": [
     {
       "week": "W-3",
-      "commits": 9
+      "commits": 3
     },
     {
       "week": "W-2",
-      "commits": 9
+      "commits": 13
     },
     {
       "week": "W-1",
-      "commits": 14
+      "commits": 7
     },
     {
       "week": "Actual",
-      "commits": 38
+      "commits": 45
     }
   ],
   "moduleEvidence": [
@@ -127,8 +127,8 @@
       "href": "/login",
       "description": "Controla acceso, registro, recuperacion de contrasena, perfiles y proteccion de rutas por rol.",
       "evidence": "El modulo acredita apoyo en identidad, acceso seguro, flujos de login/signup y recuperacion con Supabase Auth.",
-      "totalInteractions": 28,
-      "commits": 23,
+      "totalInteractions": 29,
+      "commits": 24,
       "pullRequests": 5,
       "mergedPullRequests": 5,
       "openPullRequests": 0,
@@ -140,10 +140,10 @@
       ],
       "lastActivity": {
         "type": "commit",
-        "title": "chore: refresh module evidence after auth PR",
-        "date": "29 jun 2026",
-        "time": "19:43",
-        "iso": "2026-06-30T01:43:17.000Z"
+        "title": "fix: normalize seeded auth users",
+        "date": "06 jul 2026",
+        "time": "10:16",
+        "iso": "2026-07-06T16:16:19.000Z"
       }
     },
     {
@@ -204,8 +204,8 @@
       "href": "/incidencias",
       "description": "Registra reportes, prioridades, categorias, SLA, asignaciones, comentarios y cierre con resumen.",
       "evidence": "El modulo evidencia atencion operativa, trazabilidad de reportes, cumplimiento SLA y seguimiento por staff.",
-      "totalInteractions": 15,
-      "commits": 11,
+      "totalInteractions": 16,
+      "commits": 12,
       "pullRequests": 4,
       "mergedPullRequests": 4,
       "openPullRequests": 0,
@@ -218,10 +218,10 @@
       ],
       "lastActivity": {
         "type": "commit",
-        "title": "Merge remote-tracking branch 'origin/feature/squad-5-incidents'",
-        "date": "29 jun 2026",
-        "time": "19:15",
-        "iso": "2026-06-30T01:15:29.000Z"
+        "title": "fix: align incident comment seed with schema",
+        "date": "06 jul 2026",
+        "time": "10:05",
+        "iso": "2026-07-06T16:05:24.000Z"
       }
     },
     {
@@ -231,8 +231,8 @@
       "href": "/chatbot",
       "description": "Mantiene conversaciones, FAQ oficial, mensajes, feedback y escalaciones humanas con notificacion.",
       "evidence": "El modulo acredita apoyo en autoservicio, base de conocimiento, conversaciones persistentes y handoffs.",
-      "totalInteractions": 8,
-      "commits": 6,
+      "totalInteractions": 9,
+      "commits": 7,
       "pullRequests": 2,
       "mergedPullRequests": 2,
       "openPullRequests": 0,
@@ -244,10 +244,10 @@
       ],
       "lastActivity": {
         "type": "commit",
-        "title": "Merge remote-tracking branch 'origin/feature/squad-6-chatbot'",
-        "date": "29 jun 2026",
-        "time": "19:18",
-        "iso": "2026-06-30T01:18:07.000Z"
+        "title": "feat: seed UTCJ chatbot FAQ",
+        "date": "06 jul 2026",
+        "time": "10:24",
+        "iso": "2026-07-06T16:24:32.000Z"
       }
     },
     {
@@ -257,8 +257,8 @@
       "href": "/admin",
       "description": "Consolida datos de Git/GitHub, Supabase, auditoria, despliegues y estado ejecutivo de la plataforma.",
       "evidence": "El modulo muestra evidencia de coordinacion, integracion de PRs, produccion y seguimiento del avance general.",
-      "totalInteractions": 63,
-      "commits": 60,
+      "totalInteractions": 67,
+      "commits": 64,
       "pullRequests": 3,
       "mergedPullRequests": 2,
       "openPullRequests": 0,
@@ -267,15 +267,99 @@
         "Papucho5324"
       ],
       "lastActivity": {
-        "type": "pull_request_merged",
-        "title": "PR #20: Refactor code structure for improved readability and maintainability by PAPUCHO",
-        "date": "01 jul 2026",
-        "time": "18:04",
-        "iso": "2026-07-02T00:04:22.000Z"
+        "type": "commit",
+        "title": "feat: make header actions functional",
+        "date": "06 jul 2026",
+        "time": "10:30",
+        "iso": "2026-07-06T16:30:56.000Z"
       }
     }
   ],
   "recentActivities": [
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "feat: make header actions functional",
+      "module": "Dashboard Base",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "06-jul",
+      "time": "10:30",
+      "status": "Completado",
+      "impact": "Alto"
+    },
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "feat: seed UTCJ chatbot FAQ",
+      "module": "Chatbot",
+      "squad": "Squad 6",
+      "sprint": "Sprint 3",
+      "date": "06-jul",
+      "time": "10:24",
+      "status": "Completado",
+      "impact": "Alto"
+    },
+    {
+      "user": "Jassiel García",
+      "action": "hotfix",
+      "description": "fix: normalize seeded auth users",
+      "module": "Autenticación",
+      "squad": "Squad 2",
+      "sprint": "Sprint 3",
+      "date": "06-jul",
+      "time": "10:16",
+      "status": "Completado",
+      "impact": "Medio"
+    },
+    {
+      "user": "Jassiel García",
+      "action": "hotfix",
+      "description": "fix: align incident comment seed with schema",
+      "module": "Incidencias",
+      "squad": "Squad 5",
+      "sprint": "Sprint 3",
+      "date": "06-jul",
+      "time": "10:05",
+      "status": "Completado",
+      "impact": "Medio"
+    },
+    {
+      "user": "Jassiel García",
+      "action": "hotfix",
+      "description": "fix: qualify pgcrypto functions in seed migration",
+      "module": "Dashboard Base",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "06-jul",
+      "time": "10:04",
+      "status": "Completado",
+      "impact": "Medio"
+    },
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "feat: add role workflows and premium modules",
+      "module": "Dashboard Base",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "06-jul",
+      "time": "10:01",
+      "status": "Completado",
+      "impact": "Alto"
+    },
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "chore: integrate squad branches and refresh admin dashboard",
+      "module": "Dashboard Base",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "03-jul",
+      "time": "18:18",
+      "status": "Completado",
+      "impact": "Medio"
+    },
     {
       "user": "Jassiel García",
       "action": "merge",
@@ -373,90 +457,6 @@
       "impact": "Alto"
     },
     {
-      "user": "Jassiel García",
-      "action": "validation",
-      "description": "chore: refresh module evidence after auth PR",
-      "module": "Autenticación",
-      "squad": "Squad 2",
-      "sprint": "Sprint 3",
-      "date": "29-jun",
-      "time": "19:43",
-      "status": "Completado",
-      "impact": "Medio"
-    },
-    {
-      "user": "Jassiel García",
-      "action": "merge",
-      "description": "Merge remote-tracking branch 'origin/main'",
-      "module": "Dashboard Base",
-      "squad": "Admin Master",
-      "sprint": "Sprint 3",
-      "date": "29-jun",
-      "time": "19:41",
-      "status": "Completado",
-      "impact": "Alto"
-    },
-    {
-      "user": "Jassiel García",
-      "action": "validation",
-      "description": "feat: show module evidence from git and pull requests",
-      "module": "Dashboard Base",
-      "squad": "Admin Master",
-      "sprint": "Sprint 3",
-      "date": "29-jun",
-      "time": "19:40",
-      "status": "Completado",
-      "impact": "Alto"
-    },
-    {
-      "user": "Jassiel García",
-      "action": "merge",
-      "description": "Merge pull request #19 from Alan79238/feature/squad-2-authentication",
-      "module": "Autenticación",
-      "squad": "Squad 2",
-      "sprint": "Sprint 3",
-      "date": "29-jun",
-      "time": "19:33",
-      "status": "Completado",
-      "impact": "Alto"
-    },
-    {
-      "user": "Jassiel García",
-      "action": "merge",
-      "description": "Merge branch 'main' into feature/squad-2-authentication",
-      "module": "Autenticación",
-      "squad": "Squad 2",
-      "sprint": "Sprint 3",
-      "date": "29-jun",
-      "time": "19:33",
-      "status": "Completado",
-      "impact": "Alto"
-    },
-    {
-      "user": "Jassiel García",
-      "action": "hotfix",
-      "description": "fix: attribute governance metrics to pull request squads",
-      "module": "Dashboard Base",
-      "squad": "Admin Master",
-      "sprint": "Sprint 3",
-      "date": "29-jun",
-      "time": "19:32",
-      "status": "Completado",
-      "impact": "Medio"
-    },
-    {
-      "user": "Alan79238",
-      "action": "validation",
-      "description": "Prueba Alan",
-      "module": "Dashboard Base",
-      "squad": "Externo",
-      "sprint": "Sprint 3",
-      "date": "29-jun",
-      "time": "19:25",
-      "status": "Completado",
-      "impact": "Medio"
-    },
-    {
       "user": "Trejo342",
       "action": "approval",
       "description": "Pull Request #22: Feature/squad 1 justifications (Estado: CLOSED)",
@@ -522,9 +522,9 @@
       "name": "Jassiel García",
       "squad": "Admin Master",
       "role": "Project Lead",
-      "tasks": 104,
+      "tasks": 111,
       "progress": 100,
-      "weekly": "100 commits · 4 PRs",
+      "weekly": "107 commits · 4 PRs",
       "prs": 4,
       "status": "activo"
     },

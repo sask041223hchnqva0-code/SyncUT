@@ -2,6 +2,7 @@ import { revalidatePath } from "next/cache";
 import type { Tables } from "@plataforma/types";
 
 import { requireProfile } from "@/lib/auth/session";
+import { hasPermission } from "@/lib/auth/roles";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 type Priority = Tables<"incidents">["priority"];
@@ -71,6 +72,10 @@ async function createIncident(formData: FormData) {
   "use server";
 
   const profile = await requireProfile();
+  if (profile.role !== "student") {
+    return;
+  }
+
   const supabase = await createSupabaseServerClient();
 
   const title = String(formData.get("title") ?? "").trim();
@@ -128,7 +133,7 @@ async function assignIncident(formData: FormData) {
   "use server";
 
   const profile = await requireProfile();
-  if (!["admin", "coordinator", "teacher", "tutor"].includes(profile.role)) {
+  if (!hasPermission(profile.role, "incidents:assign")) {
     return;
   }
 
@@ -209,6 +214,10 @@ async function updateIncidentStatus(formData: FormData) {
     return;
   }
 
+  if (!hasPermission(profile.role, "incidents:resolve")) {
+    return;
+  }
+
   if (["resuelta", "cerrada"].includes(status) && !resolutionSummary) {
     return;
   }
@@ -266,6 +275,22 @@ async function createIncidentComment(formData: FormData) {
     return;
   }
 
+  const { data: visibleIncident } = await supabase
+    .from("incidents")
+    .select("reported_by, assigned_to")
+    .eq("id", incidentId)
+    .maybeSingle();
+
+  const canComment =
+    visibleIncident &&
+    (visibleIncident.reported_by === profile.id ||
+      hasPermission(profile.role, "incidents:comment") ||
+      hasPermission(profile.role, "incidents:resolve"));
+
+  if (!canComment) {
+    return;
+  }
+
   const { error } = await supabase.from("incident_comments").insert({
     incident_id: incidentId,
     author_id: profile.id,
@@ -316,7 +341,13 @@ export default async function IncidenciasPage({
   const profile = await requireProfile();
   const params = await searchParams;
   const supabase = await createSupabaseServerClient();
-  const canManage = ["admin", "coordinator", "teacher", "tutor"].includes(profile.role);
+  const canCreateIncident = profile.role === "student";
+  const canAssignIncident = hasPermission(profile.role, "incidents:assign");
+  const canResolveIncident = hasPermission(profile.role, "incidents:resolve");
+  const canCommentIncident =
+    hasPermission(profile.role, "incidents:comment") ||
+    canAssignIncident ||
+    canResolveIncident;
 
   let query = supabase
     .from("incidents")
@@ -443,6 +474,7 @@ export default async function IncidenciasPage({
       </section>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1.6fr]">
+        {canCreateIncident ? (
         <form action={createIncident} className="rounded-lg border border-outline-variant bg-surface-container p-5">
           <h2 className="text-sm font-semibold uppercase text-on-surface-variant">Nuevo reporte</h2>
           <div className="mt-4 space-y-3">
@@ -481,6 +513,20 @@ export default async function IncidenciasPage({
             Reportar incidencia
           </button>
         </form>
+        ) : (
+          <section className="rounded-lg border border-outline-variant bg-surface-container p-5">
+            <h2 className="text-sm font-semibold uppercase text-on-surface-variant">Rol en incidencias</h2>
+            <p className="mt-3 text-sm text-on-surface-variant">
+              {profile.role === "coordinator"
+                ? "Asigna responsables, da seguimiento a SLA y resuelve incidencias institucionales."
+                : profile.role === "teacher"
+                  ? "Comenta incidencias academicas asignadas con evidencia docente."
+                  : profile.role === "tutor"
+                    ? "Aporta seguimiento tutorial y contexto del estudiante en casos visibles."
+                    : "Supervisa la bitacora completa y puede cerrar casos criticos."}
+            </p>
+          </section>
+        )}
 
         <section className="rounded-lg border border-outline-variant bg-surface-container p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -541,8 +587,9 @@ export default async function IncidenciasPage({
                   </p>
                 ) : null}
 
-                {canManage ? (
+                {(canAssignIncident || canResolveIncident) ? (
                   <div className="mt-4 space-y-3">
+                  {canAssignIncident ? (
                   <form action={assignIncident} className="flex flex-col gap-2 sm:flex-row">
                     <input type="hidden" name="incident_id" value={item.id} />
                     <select name="assigned_to" className="min-w-0 flex-1 rounded border border-outline-variant bg-surface-container px-3 py-2 text-xs text-on-surface" defaultValue={item.assigned_to ?? ""}>
@@ -557,6 +604,8 @@ export default async function IncidenciasPage({
                       Asignar
                     </button>
                   </form>
+                  ) : null}
+                  {canResolveIncident ? (
                   <form action={updateIncidentStatus} className="flex flex-col gap-2">
                     <input type="hidden" name="id" value={item.id} />
                     <input
@@ -576,6 +625,7 @@ export default async function IncidenciasPage({
                       </button>
                     </div>
                   </form>
+                  ) : null}
                   </div>
                 ) : null}
                 {incidentComments.length > 0 ? (
@@ -592,6 +642,7 @@ export default async function IncidenciasPage({
                     ))}
                   </div>
                 ) : null}
+                {(canCommentIncident || item.reported_by === profile.id) ? (
                 <form action={createIncidentComment} className="mt-4 flex flex-col gap-2 sm:flex-row">
                   <input type="hidden" name="incident_id" value={item.id} />
                   <input
@@ -604,6 +655,7 @@ export default async function IncidenciasPage({
                     Comentar
                   </button>
                 </form>
+                ) : null}
                 {incidentAudit.length > 0 ? (
                   <details className="mt-4 rounded border border-outline-variant bg-surface-container p-3">
                     <summary className="cursor-pointer text-xs font-semibold uppercase text-on-surface-variant">
