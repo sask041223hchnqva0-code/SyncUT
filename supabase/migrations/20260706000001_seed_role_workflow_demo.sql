@@ -363,13 +363,15 @@ SET assigned_to = EXCLUDED.assigned_to,
     category = EXCLUDED.category,
     updated_at = now();
 
-INSERT INTO public.incident_comments (incident_id, author_id, content)
+INSERT INTO public.incident_comments (id, incident_id, author_id, comment)
 VALUES (
+  '00000000-0000-4000-8000-000000000502',
   '00000000-0000-4000-8000-000000000501',
   '00000000-0000-4000-8000-000000000104',
   'Coordinacion valida el documento y mantiene el caso en seguimiento.'
 )
-ON CONFLICT DO NOTHING;
+ON CONFLICT (id) DO UPDATE
+SET comment = EXCLUDED.comment;
 
 INSERT INTO public.incident_audit_events (incident_id, actor_id, event_type, to_status, to_priority, assigned_to, note)
 VALUES (
