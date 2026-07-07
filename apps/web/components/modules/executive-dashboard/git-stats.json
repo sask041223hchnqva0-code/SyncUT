@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-06T20:36:19.065Z",
-  "headCommit": "bc9f35285ffc0fca5f3682c2aad2e9368e3f30ab",
+  "generatedAt": "2026-07-07T02:46:32.650Z",
+  "headCommit": "0b74b1e3fed3aaf85ef813c705b520dad1509916",
   "githubAvailable": true,
-  "totalCommits": 140,
+  "totalCommits": 142,
   "totalPRs": 22,
   "mergedPRs": 21,
   "openPRs": 0,
@@ -33,7 +33,7 @@
     },
     {
       "squad": "Admin (Dashboard Gobernanza)",
-      "progreso": 66
+      "progreso": 68
     }
   ],
   "prsBySquad": [
@@ -76,19 +76,19 @@
   "commitsByWeek": [
     {
       "week": "W-3",
-      "commits": 3
+      "commits": 4
     },
     {
       "week": "W-2",
-      "commits": 13
+      "commits": 12
     },
     {
       "week": "W-1",
-      "commits": 7
+      "commits": 38
     },
     {
       "week": "Actual",
-      "commits": 47
+      "commits": 18
     }
   ],
   "moduleEvidence": [
@@ -257,8 +257,8 @@
       "href": "/admin",
       "description": "Consolida datos de Git/GitHub, Supabase, auditoria, despliegues y estado ejecutivo de la plataforma.",
       "evidence": "El modulo muestra evidencia de coordinacion, integracion de PRs, produccion y seguimiento del avance general.",
-      "totalInteractions": 69,
-      "commits": 66,
+      "totalInteractions": 71,
+      "commits": 68,
       "pullRequests": 3,
       "mergedPullRequests": 2,
       "openPullRequests": 0,
@@ -268,14 +268,38 @@
       ],
       "lastActivity": {
         "type": "commit",
-        "title": "docs: document real role workflows",
+        "title": "Configure email queue processing",
         "date": "06 jul 2026",
-        "time": "14:26",
-        "iso": "2026-07-06T20:26:51.000Z"
+        "time": "16:21",
+        "iso": "2026-07-06T22:21:24.000Z"
       }
     }
   ],
   "recentActivities": [
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "Configure email queue processing",
+      "module": "Dashboard Base",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "06-jul",
+      "time": "16:21",
+      "status": "Completado",
+      "impact": "Medio"
+    },
+    {
+      "user": "Jassiel García",
+      "action": "validation",
+      "description": "feat: validate forms by workflow",
+      "module": "Dashboard Base",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "06-jul",
+      "time": "14:38",
+      "status": "Completado",
+      "impact": "Alto"
+    },
     {
       "user": "Jassiel García",
       "action": "validation",
@@ -433,30 +457,6 @@
       "impact": "Alto"
     },
     {
-      "user": "Jassiel García",
-      "action": "merge",
-      "description": "Merge pull request #20 from Papucho5324/main",
-      "module": "Dashboard Base",
-      "squad": "Admin Master",
-      "sprint": "Sprint 3",
-      "date": "01-jul",
-      "time": "18:04",
-      "status": "Completado",
-      "impact": "Alto"
-    },
-    {
-      "user": "Jassiel García",
-      "action": "merge",
-      "description": "Merge branch 'main' into main",
-      "module": "Dashboard Base",
-      "squad": "Admin Master",
-      "sprint": "Sprint 3",
-      "date": "01-jul",
-      "time": "17:48",
-      "status": "Completado",
-      "impact": "Alto"
-    },
-    {
       "user": "Trejo342",
       "action": "approval",
       "description": "Pull Request #22: Feature/squad 1 justifications (Estado: CLOSED)",
@@ -522,9 +522,9 @@
       "name": "Jassiel García",
       "squad": "Admin Master",
       "role": "Project Lead",
-      "tasks": 113,
+      "tasks": 115,
       "progress": 100,
-      "weekly": "109 commits · 4 PRs",
+      "weekly": "111 commits · 4 PRs",
       "prs": 4,
       "status": "activo"
     },

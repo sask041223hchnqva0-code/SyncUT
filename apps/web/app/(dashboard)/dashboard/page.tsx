@@ -69,6 +69,7 @@ const permissionLabels: Record<RolePermission, string> = {
   "appointments:session_note": "Documentar sesiones",
   "appointments:oversight": "Supervisar agenda",
   "notifications:view": "Consultar notificaciones",
+  "notifications:send": "Enviar avisos docentes",
   "incidents:create": "Reportar incidencias",
   "incidents:comment": "Comentar incidencias",
   "incidents:assign": "Asignar incidencias",

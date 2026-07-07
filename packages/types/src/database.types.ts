@@ -1290,6 +1290,83 @@ export type Database = {
           },
         ]
       }
+      tutor_team_members: {
+        Row: {
+          id: string
+          joined_at: string
+          status: string
+          student_id: string
+          team_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          status?: string
+          student_id: string
+          team_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          status?: string
+          student_id?: string
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tutor_team_members_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tutor_team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "tutor_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tutor_teams: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          join_code: string
+          name: string
+          tutor_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          join_code: string
+          name: string
+          tutor_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          join_code?: string
+          name?: string
+          tutor_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tutor_teams_tutor_id_fkey"
+            columns: ["tutor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tutoring_session_notes: {
         Row: {
           agreements: string | null
@@ -1382,6 +1459,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_tutor_team: {
+        Args: { p_name?: string }
+        Returns: {
+          created_at: string
+          id: string
+          is_active: boolean
+          join_code: string
+          name: string
+        }[]
+      }
       emit_notification: {
         Args: {
           p_body: string
@@ -1393,6 +1480,7 @@ export type Database = {
         }
         Returns: string
       }
+      generate_tutor_join_code: { Args: never; Returns: string }
       get_email_queue_summary: {
         Args: never
         Returns: {
@@ -1400,6 +1488,15 @@ export type Database = {
           oldest_scheduled_at: string
           status: Database["public"]["Enums"]["email_status"]
           total: number
+        }[]
+      }
+      get_teacher_directory: {
+        Args: never
+        Returns: {
+          department: string
+          email: string
+          full_name: string
+          id: string
         }[]
       }
       has_role: { Args: { allowed_roles: string[] }; Returns: boolean }
@@ -1411,6 +1508,24 @@ export type Database = {
         Returns: string
       }
       is_admin: { Args: never; Returns: boolean }
+      join_tutor_team: {
+        Args: { p_join_code: string }
+        Returns: {
+          join_code: string
+          student_id: string
+          team_id: string
+          tutor_id: string
+        }[]
+      }
+      send_tutor_teacher_notification: {
+        Args: {
+          p_body: string
+          p_teacher_id: string
+          p_team_id: string
+          p_title: string
+        }
+        Returns: string
+      }
       set_user_role: {
         Args: { new_role: string; target_user_id: string }
         Returns: undefined

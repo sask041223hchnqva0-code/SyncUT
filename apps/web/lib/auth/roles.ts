@@ -21,6 +21,7 @@ export type RolePermission =
   | "appointments:session_note"
   | "appointments:oversight"
   | "notifications:view"
+  | "notifications:send"
   | "incidents:create"
   | "incidents:comment"
   | "incidents:assign"
@@ -108,6 +109,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly RolePermission[]> = {
     "appointments:attendance",
     "appointments:session_note",
     "notifications:view",
+    "notifications:send",
     "incidents:comment",
     "chatbot:use",
   ],
@@ -116,6 +118,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly RolePermission[]> = {
     "justifications:resolve",
     "appointments:oversight",
     "notifications:view",
+    "notifications:send",
     "incidents:assign",
     "incidents:resolve",
     "chatbot:use",
@@ -134,6 +137,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly RolePermission[]> = {
     "appointments:session_note",
     "appointments:oversight",
     "notifications:view",
+    "notifications:send",
     "incidents:create",
     "incidents:comment",
     "incidents:assign",
@@ -152,6 +156,13 @@ export const ROLE_MODULES: readonly RoleModule[] = [
     icon: "gavel",
     squad: "Squad 1",
     permissions: ["justifications:create", "justifications:academic_note", "justifications:tutor_followup", "justifications:resolve"],
+  },
+  {
+    href: "/equipo",
+    label: "Equipo Tutorial",
+    icon: "groups",
+    squad: "Tutoría",
+    permissions: ["appointments:create", "appointments:availability", "justifications:tutor_followup", "notifications:send"],
   },
   {
     href: "/citas",
