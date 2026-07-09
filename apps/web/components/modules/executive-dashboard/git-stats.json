@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-07T14:36:22.580Z",
-  "headCommit": "1f156cbde065e9191e91ebf88c6b258e5c0e1a1e",
+  "generatedAt": "2026-07-09T00:13:07.187Z",
+  "headCommit": "564c796262f8a0978ac71af232c00fbbd3cb7af1",
   "githubAvailable": true,
-  "totalCommits": 143,
+  "totalCommits": 144,
   "totalPRs": 22,
   "mergedPRs": 21,
   "openPRs": 0,
@@ -33,7 +33,7 @@
     },
     {
       "squad": "Admin (Dashboard Gobernanza)",
-      "progreso": 69
+      "progreso": 70
     }
   ],
   "prsBySquad": [
@@ -80,15 +80,15 @@
     },
     {
       "week": "W-2",
-      "commits": 9
+      "commits": 10
     },
     {
       "week": "W-1",
-      "commits": 38
+      "commits": 42
     },
     {
       "week": "Actual",
-      "commits": 19
+      "commits": 15
     }
   ],
   "moduleEvidence": [
@@ -257,8 +257,8 @@
       "href": "/admin",
       "description": "Consolida datos de Git/GitHub, Supabase, auditoria, despliegues y estado ejecutivo de la plataforma.",
       "evidence": "El modulo muestra evidencia de coordinacion, integracion de PRs, produccion y seguimiento del avance general.",
-      "totalInteractions": 72,
-      "commits": 69,
+      "totalInteractions": 73,
+      "commits": 70,
       "pullRequests": 3,
       "mergedPullRequests": 2,
       "openPullRequests": 0,
@@ -268,14 +268,26 @@
       ],
       "lastActivity": {
         "type": "commit",
-        "title": "feat: implement tutor team production flow",
+        "title": "fix: restore tutor teacher operational visibility",
         "date": "07 jul 2026",
-        "time": "08:27",
-        "iso": "2026-07-07T14:27:18.000Z"
+        "time": "08:39",
+        "iso": "2026-07-07T14:39:52.000Z"
       }
     }
   ],
   "recentActivities": [
+    {
+      "user": "Jassiel García",
+      "action": "hotfix",
+      "description": "fix: restore tutor teacher operational visibility",
+      "module": "Dashboard Base",
+      "squad": "Admin Master",
+      "sprint": "Sprint 3",
+      "date": "07-jul",
+      "time": "08:39",
+      "status": "Completado",
+      "impact": "Medio"
+    },
     {
       "user": "Jassiel García",
       "action": "validation",
@@ -445,18 +457,6 @@
       "impact": "Alto"
     },
     {
-      "user": "Jassiel García",
-      "action": "merge",
-      "description": "Merge pull request #22 from Trejo342/feature/squad-1-justifications",
-      "module": "Justificaciones",
-      "squad": "Squad 1",
-      "sprint": "Sprint 3",
-      "date": "01-jul",
-      "time": "18:06",
-      "status": "Completado",
-      "impact": "Alto"
-    },
-    {
       "user": "Trejo342",
       "action": "approval",
       "description": "Pull Request #22: Feature/squad 1 justifications (Estado: CLOSED)",
@@ -522,9 +522,9 @@
       "name": "Jassiel García",
       "squad": "Admin Master",
       "role": "Project Lead",
-      "tasks": 116,
+      "tasks": 117,
       "progress": 100,
-      "weekly": "112 commits · 4 PRs",
+      "weekly": "113 commits · 4 PRs",
       "prs": 4,
       "status": "activo"
     },

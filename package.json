@@ -19,7 +19,8 @@
     "db:push": "pnpm dlx supabase@latest db push",
     "db:gen": "node scripts/generate-db-types.js",
     "db:test": "node --env-file=.env.local scripts/test-db.js",
-    "db:test:security": "node scripts/test-auth-security.js"
+    "db:test:security": "node scripts/test-auth-security.js",
+    "db:test:roles": "node scripts/test-role-visibility.js"
   },
   "devDependencies": {
     "@hookform/resolvers": "^5.2.2",
